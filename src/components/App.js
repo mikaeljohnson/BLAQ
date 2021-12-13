@@ -29,6 +29,7 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
+    const presaleAddress = "0xb60674021584Ec52320716005D1e0D26cD8f1dc4"
     const web3 = window.web3
     // Load account
     const accounts = await web3.eth.getAccounts()
@@ -37,7 +38,7 @@ class App extends Component {
     const networkId = await web3.eth.net.getId()
     const networkData = 137 === networkId
     if(networkData) {
-      const presale = new web3.eth.Contract(Presale.abi, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10")
+      const presale = new web3.eth.Contract(Presale.abi, presaleAddress)
       this.setState({presale})
       const usdc = new web3.eth.Contract(IERC20.abi, "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174")
       this.setState({usdc})
@@ -75,19 +76,19 @@ class App extends Component {
       this.setState({userVested})
 
       var usdcApproved = 0;
-      await this.state.usdc.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
+      await this.state.usdc.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
         usdcApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdcApproved})
       
       var usdtApproved = 0;
-      await this.state.usdt.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
+      await this.state.usdt.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
         usdtApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdtApproved})
      
       var wmaticApproved = 0;
-      await this.state.wmatic.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
+      await this.state.wmatic.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
         wmaticApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({wmaticApproved})
@@ -214,9 +215,17 @@ class App extends Component {
                         e.preventDefault();
                         if(parseInt(this.state.usdcApproved) > 0) {
                           
-                          this.buyUsdc();
+                          this.buyUsdc().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });
                         } else {
-                          this.approveUsdc();
+                          this.approveUsdc().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });
                         }
                       }}
                       >Buy with USDC</button> 
@@ -224,9 +233,17 @@ class App extends Component {
                       onClick={(e) => {
                         e.preventDefault();
                         if(parseInt(this.state.usdtApproved) > 0) {
-                          this.buyUsdt();
+                          this.buyUsdt().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });;
                         } else {
-                          this.approveUsdt();
+                          this.approveUsdt().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });;
                         }
                       }}
                       >Buy with USDT</button> 
@@ -234,9 +251,17 @@ class App extends Component {
                       onClick={(e) => {
                         e.preventDefault();
                         if(parseInt(this.state.wmaticApproved) > 0) {
-                          this.buyWMatic();
+                          this.buyWMatic().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });
                         } else {
-                          this.approveWMatic();
+                          this.approveWMatic().then((result) => {
+                            console.log("Success! Got result: " + result);
+                          }).catch((err) => {
+                            console.log("Failed with error: " + err);
+                          });
                         }
                       }}
                       >Buy with wMatic</button>   
