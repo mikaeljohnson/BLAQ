@@ -37,7 +37,7 @@ class App extends Component {
     const networkId = await web3.eth.net.getId()
     const networkData = 137 === networkId
     if(networkData) {
-      const presale = new web3.eth.Contract(Presale.abi, "0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c")
+      const presale = new web3.eth.Contract(Presale.abi, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10")
       this.setState({presale})
       const usdc = new web3.eth.Contract(IERC20.abi, "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174")
       this.setState({usdc})
@@ -75,19 +75,19 @@ class App extends Component {
       this.setState({userVested})
 
       var usdcApproved = 0;
-      await this.state.usdc.methods.allowance(this.state.account, "0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c").call().then(function(result){
+      await this.state.usdc.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
         usdcApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdcApproved})
       
       var usdtApproved = 0;
-      await this.state.usdt.methods.allowance(this.state.account, "0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c").call().then(function(result){
+      await this.state.usdt.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
         usdtApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdtApproved})
      
       var wmaticApproved = 0;
-      await this.state.wmatic.methods.allowance(this.state.account, "0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c").call().then(function(result){
+      await this.state.wmatic.methods.allowance(this.state.account, "0xC77c55F8f448B54c67816Ea932de25e7600Ace10").call().then(function(result){
         wmaticApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({wmaticApproved})
@@ -99,17 +99,17 @@ class App extends Component {
 
   approveUsdc = description => {
     console.log("Approving USDC")
-    this.state.usdc.methods.approve("0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c", this.state.appValue).send({ from: this.state.account })
+    this.state.usdc.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
   }
 
   approveUsdt = description => {
     console.log("Approving USDT")
-    this.state.usdt.methods.approve("0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c", this.state.appValue).send({ from: this.state.account })
+    this.state.usdt.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
   }
 
   approveWMatic = description => {
     console.log("Approving WMatic")
-    this.state.wmatic.methods.approve("0x28A58961A439DDd49a07Ca87B46e0039e77f7D2c", this.state.appValue).send({ from: this.state.account })
+    this.state.wmatic.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
   }
 
   buyUsdc = description => {
