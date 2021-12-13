@@ -47,7 +47,6 @@ class App extends Component {
       this.setState({wmatic})
       const appValue = "10000000000000000000000000000000000000000000000000000000000000000";
       this.setState({appValue})
-
       var tokensSold = 0;
       await this.state.presale.methods._tokensSold().call({from: this.state.account}).then(function(result){
         tokensSold = result;
