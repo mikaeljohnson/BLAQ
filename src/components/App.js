@@ -30,6 +30,7 @@ class App extends Component {
 
   async loadBlockchainData() {
     const presaleAddress = "0xb60674021584Ec52320716005D1e0D26cD8f1dc4"
+    this.setState({presaleAddress})
     const web3 = window.web3
     // Load account
     const accounts = await web3.eth.getAccounts()
@@ -66,7 +67,7 @@ class App extends Component {
       })
       this.setState({leftInRound})
       
-      var leftInRoundPercent = leftInRound / 1250
+      var leftInRoundPercent = (leftInRound - 1250) / 1250
       this.setState({leftInRoundPercent})
 
       var userVested = 1;
@@ -76,19 +77,19 @@ class App extends Component {
       this.setState({userVested})
 
       var usdcApproved = 0;
-      await this.state.usdc.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
+      await this.state.usdc.methods.allowance(this.state.account, this.state.presaleAddress).call().then(function(result){
         usdcApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdcApproved})
       
       var usdtApproved = 0;
-      await this.state.usdt.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
+      await this.state.usdt.methods.allowance(this.state.account, this.state.presaleAddress).call().then(function(result){
         usdtApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdtApproved})
      
       var wmaticApproved = 0;
-      await this.state.wmatic.methods.allowance(this.state.account, presaleAddress).call().then(function(result){
+      await this.state.wmatic.methods.allowance(this.state.account, this.state.presaleAddress).call().then(function(result){
         wmaticApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({wmaticApproved})
@@ -100,33 +101,45 @@ class App extends Component {
 
   approveUsdc = description => {
     console.log("Approving USDC")
-    this.state.usdc.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
+    this.state.usdc.methods.approve(this.state.presaleAddress, this.state.appValue).send({ from: this.state.account })
   }
 
   approveUsdt = description => {
     console.log("Approving USDT")
-    this.state.usdt.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
+    this.state.usdt.methods.approve(this.state.presaleAddress, this.state.appValue).send({ from: this.state.account })
   }
 
   approveWMatic = description => {
     console.log("Approving WMatic")
-    this.state.wmatic.methods.approve("0xC77c55F8f448B54c67816Ea932de25e7600Ace10", this.state.appValue).send({ from: this.state.account })
+    this.state.wmatic.methods.approve(this.state.presaleAddress, this.state.appValue).send({ from: this.state.account })
   }
 
   buyUsdc = description => {
     console.log(this.state.message)
-    this.state.presale.methods.buyWithUsdc(this.state.message).send({from: this.state.account})
+    this.state.presale.methods.buyWithUsdc(this.state.message).send({from: this.state.account}).then((result) => {
+      console.log("Success! Got result: " + result);
+    }).catch((err) => {
+      console.log("Failed with error: " + err);
+    });
 
   }
   
   buyUsdt = description => {
     console.log(this.state.appValue)
-    this.state.presale.methods.buyWithUsdt(this.state.message).send({from: this.state.account})
+    this.state.presale.methods.buyWithUsdt(this.state.message).send({from: this.state.account}).then((result) => {
+      console.log("Success! Got result: " + result);
+    }).catch((err) => {
+      console.log("Failed with error: " + err);
+    });
   }
 
   buyWMatic = description => {
     console.log(this.state.appValue)
-    this.state.presale.methods.buyWithWMatic(this.state.message).send({from: this.state.account})
+    this.state.presale.methods.buyWithWMatic(this.state.message).send({from: this.state.account}).then((result) => {
+      console.log("Success! Got result: " + result);
+    }).catch((err) => {
+      console.log("Failed with error: " + err);
+    });
   }
 
   claim = description => {
@@ -215,17 +228,9 @@ class App extends Component {
                         e.preventDefault();
                         if(parseInt(this.state.usdcApproved) > 0) {
                           
-                          this.buyUsdc().then((result) => {
-                            console.log("Success! Got result: " + result);
-                          }).catch((err) => {
-                            console.log("Failed with error: " + err);
-                          });
+                          this.buyUsdc();
                         } else {
-                          this.approveUsdc().then((result) => {
-                            console.log("Success! Got result: " + result);
-                          }).catch((err) => {
-                            console.log("Failed with error: " + err);
-                          });
+                          this.approveUsdc();
                         }
                       }}
                       >Buy with USDC</button> 
@@ -233,17 +238,9 @@ class App extends Component {
                       onClick={(e) => {
                         e.preventDefault();
                         if(parseInt(this.state.usdtApproved) > 0) {
-                          this.buyUsdt().then((result) => {
-                            console.log("Success! Got result: " + result);
-                          }).catch((err) => {
-                            console.log("Failed with error: " + err);
-                          });;
+                          this.buyUsdt();
                         } else {
-                          this.approveUsdt().then((result) => {
-                            console.log("Success! Got result: " + result);
-                          }).catch((err) => {
-                            console.log("Failed with error: " + err);
-                          });;
+                          this.approveUsdt();
                         }
                       }}
                       >Buy with USDT</button> 
@@ -257,11 +254,7 @@ class App extends Component {
                             console.log("Failed with error: " + err);
                           });
                         } else {
-                          this.approveWMatic().then((result) => {
-                            console.log("Success! Got result: " + result);
-                          }).catch((err) => {
-                            console.log("Failed with error: " + err);
-                          });
+                          this.approveWMatic();
                         }
                       }}
                       >Buy with wMatic</button>   
@@ -272,7 +265,7 @@ class App extends Component {
             <Container className='gaugeArea'>
                 <Container className='gaugeInfo'>
                 <p>
-                  {this.state.leftInRound} Current Round Sales
+                  {this.state.leftInRound} Left in Round
                 </p>
 
                 <GaugeChart className='gauge' id="gauge-chart2" 
