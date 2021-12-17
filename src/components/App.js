@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const presaleAddress = "0x88E708352D23FEe828C3438Ab7fD28b925688a27"
+    const presaleAddress = "0xc96d597a8e350714Fea0b7C10EA693C8b7Ac7329"
     this.setState({presaleAddress})
     const web3 = window.web3
     // Load account
@@ -55,14 +55,23 @@ class App extends Component {
       })
       this.setState({tokensSold})
       
-      var tokenPrice = 0.30;
-
-      this.setState({tokenPrice})
       var currentRound = 0;
       await this.state.presale.methods._currentRound().call({from: this.state.account}).then(function(result){
         currentRound = result;
       })
       this.setState({currentRound})
+
+
+      var tokenPrice = 0.30;
+      await this.state.presale.methods._rounds(this.state.currentRound).call({from: this.state.account}).then(function(result){
+        tokenPrice = result._usdcPrice
+        console.log(tokenPrice)
+
+      })
+      tokenPrice /= 1000000
+      console.log(tokenPrice)
+      this.setState({tokenPrice})
+      
 
       var leftInRound = 0;
       await this.state.presale.methods._rounds(this.state.currentRound).call({from: this.state.account}).then(function(result){
@@ -70,7 +79,7 @@ class App extends Component {
       })
       this.setState({leftInRound})
       
-      var leftInRoundPercent = (leftInRound - 12500000) / 12500000
+      var leftInRoundPercent = ((100 * leftInRound) / 1250000000)
       this.setState({leftInRoundPercent})
 
       var userVested = 1;
@@ -307,6 +316,9 @@ class App extends Component {
 
 
                 </Container>
+                <div>
+                  <label> Please give time for transactions to process and refresh the page after each has been completed if your values are not refreshing.</label>
+                </div>
           </div>
         </div>
         </center>
