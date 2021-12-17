@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const presaleAddress = "0xb60674021584Ec52320716005D1e0D26cD8f1dc4"
+    const presaleAddress = "0x27E6276E43eE437a718408c81eB016d66FA7E84F"
     this.setState({presaleAddress})
     const web3 = window.web3
     // Load account
@@ -54,7 +54,10 @@ class App extends Component {
         tokensSold = result;
       })
       this.setState({tokensSold})
+      
+      var tokenPrice = 0.30;
 
+      this.setState({tokenPrice})
       var currentRound = 0;
       await this.state.presale.methods._currentRound().call({from: this.state.account}).then(function(result){
         currentRound = result;
@@ -67,7 +70,7 @@ class App extends Component {
       })
       this.setState({leftInRound})
       
-      var leftInRoundPercent = (leftInRound - 1250) / 1250
+      var leftInRoundPercent = (leftInRound - 12500000) / 12000000
       this.setState({leftInRoundPercent})
 
       var userVested = 1;
@@ -81,7 +84,7 @@ class App extends Component {
         usdcApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdcApproved})
-      
+      console.log(usdcApproved)
       var usdtApproved = 0;
       await this.state.usdt.methods.allowance(this.state.account, this.state.presaleAddress).call().then(function(result){
         usdtApproved = web3.utils.fromWei(result, 'ether')
@@ -206,7 +209,7 @@ class App extends Component {
                 
                 <h1>Blaq Token Presale</h1>
                 <p>
-                  Purchase Blaq Tokens for USDC, USDT or wMatic
+                  Purchase Blaq Tokens for ${this.state.tokenPrice} USDC, USDT or wMatic Equivalent
                 </p>
 
                   
@@ -275,7 +278,9 @@ class App extends Component {
                   percent={this.state.leftInRoundPercent}
                 
                 />
-
+                <p>
+                  Round Sales
+                </p>
                 </Container>
                 
                 <Container className='gaugeInfo'>
