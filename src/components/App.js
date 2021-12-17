@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const presaleAddress = "0x27E6276E43eE437a718408c81eB016d66FA7E84F"
+    const presaleAddress = "0x88E708352D23FEe828C3438Ab7fD28b925688a27"
     this.setState({presaleAddress})
     const web3 = window.web3
     // Load account
@@ -70,7 +70,7 @@ class App extends Component {
       })
       this.setState({leftInRound})
       
-      var leftInRoundPercent = (leftInRound - 12500000) / 12000000
+      var leftInRoundPercent = (leftInRound - 12500000) / 12500000
       this.setState({leftInRoundPercent})
 
       var userVested = 1;
@@ -278,9 +278,6 @@ class App extends Component {
                   percent={this.state.leftInRoundPercent}
                 
                 />
-                <p>
-                  Round Sales
-                </p>
                 </Container>
                 
                 <Container className='gaugeInfo'>
@@ -290,7 +287,7 @@ class App extends Component {
 
                 <GaugeChart className='gauge' id="gauge-chart2" 
                  nrOfLevels={20} 
-                percent={this.state.tokensSold/5000} />
+                percent={this.state.tokensSold/50000000} />
 
                 </Container>
 
