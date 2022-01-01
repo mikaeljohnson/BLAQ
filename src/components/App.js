@@ -164,7 +164,12 @@ class App extends Component {
       account: '',
       loading: true,
       appValue: 0,
-      message: 0
+      userVested: 0,
+      tokenPrice: 0.3,
+      message: 0,
+      tokensSold: 0,
+      leftInRoundPercent: 0,
+      currentRound: 1
     }
 
     this.claim = this.claim.bind(this)
