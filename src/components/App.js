@@ -61,15 +61,11 @@ class App extends Component {
       })
       this.setState({currentRound})
 
-
       var tokenPrice = 0.30;
       await this.state.presale.methods._rounds(this.state.currentRound).call({from: this.state.account}).then(function(result){
         tokenPrice = result._usdcPrice
-        console.log(tokenPrice)
-
       })
       tokenPrice /= 1000000
-      console.log(tokenPrice)
       this.setState({tokenPrice})
       
 
@@ -93,7 +89,6 @@ class App extends Component {
         usdcApproved = web3.utils.fromWei(result, 'ether')
       })
       this.setState({usdcApproved})
-      console.log(usdcApproved)
       var usdtApproved = 0;
       await this.state.usdt.methods.allowance(this.state.account, this.state.presaleAddress).call().then(function(result){
         usdtApproved = web3.utils.fromWei(result, 'ether')
@@ -168,6 +163,7 @@ class App extends Component {
       tokenPrice: 0.3,
       message: 0,
       tokensSold: 0,
+      leftInRound: 12500000,
       leftInRoundPercent: 0,
       currentRound: 1
     }
